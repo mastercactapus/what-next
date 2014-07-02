@@ -1,0 +1,33 @@
+<template name="projectPage">
+<div>
+	{{name}}
+</div>
+{{> projectLists}}
+</template>
+
+<template name="projectLists">
+	<div class="lists">
+		{{#each lists}}
+			<div class="list">
+				<div class="header"></div>
+				<div class="cards">
+					{{> listCards}}
+				</div>
+				<div class="new-task"></div>
+			</div>
+		{{/each}}
+
+		<div class="list">
+			<div class="header"><input type="text" class="input-sm form-control" placeholder="list name"></div>
+
+			<div class="text-center">
+				<button class="create">Create List</button>
+			</div>
+
+		</div>
+	</div>
+</template>
+
+<template name="listCards">
+
+</template>

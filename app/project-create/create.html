@@ -1,0 +1,22 @@
+<template name="createProject">
+<form role="form">
+  <div class="form-group">
+    <label for="createProjectName">Name</label>
+    <input type="text" class="form-control" id="createProjectName" placeholder="Enter name">
+  </div>
+  <div class="form-group">
+    <label for="createProjectWebsite">Website</label>
+    <input type="url" class="form-control" id="createProjectWebsite" placeholder="Enter url">
+  </div>
+
+  <div class="form-group">
+    <label for="createProjectDescription">Description</label>
+    <div id="createProjectDescription">sdfd</div>
+  </div>
+  <div class="text-right">
+    <button rel="create">Create</button>
+  </div>
+  <hr>
+  <div id="createProjectDescriptionPreview">{{{descriptionPreview}}}</div>
+</form>
+</template>

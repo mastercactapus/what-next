@@ -1,0 +1,9 @@
+{
+  "packages": {
+    "bootstrap3-less": {},
+    "iron-router": {},
+    "marked": {},
+    "reactive-ace": {},
+    "lodash": {}
+  }
+}
