@@ -1,13 +1,34 @@
-.list {
-	width: 16em;
-	padding: 6px;
-	margin: 4px;
-	background: gray;
-	min-height: 6em;
-	border-radius: 3px;
+@listwidth: 18em;
 
-	button.create {
-		margin-top: 1em;
-		margin-bottom: 1em;
+.lists {
+	display:inline-block;
+	position:absolute;
+	overflow-x:scroll;
+	white-space: nowrap;
+	top:2em;
+	bottom:0;
+}
+
+.new-list {
+	width: @listwidth;
+	cursor: pointer;
+}
+
+.list {
+	display: inline-block;
+	width: @listwidth;
+	min-height: 6em;
+
+	.panel-heading {
+		cursor: pointer;
 	}
+
+	.panel-footer {
+		cursor: pointer;
+	}
+
+	.panel-footer:hover {
+		background: lightgrey;
+	}
+
 }
