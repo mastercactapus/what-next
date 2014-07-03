@@ -4,6 +4,7 @@
     "iron-router": {},
     "marked": {},
     "reactive-ace": {},
-    "lodash": {}
+    "lodash": {},
+    "jquery-ui-sortable": {}
   }
 }

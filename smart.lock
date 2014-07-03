@@ -6,7 +6,8 @@
       "iron-router": {},
       "marked": {},
       "reactive-ace": {},
-      "lodash": {}
+      "lodash": {},
+      "jquery-ui-sortable": {}
     },
     "packages": {
       "bootstrap3-less": {
@@ -33,6 +34,11 @@
         "git": "https://github.com/alethes/meteor-lodash.git",
         "tag": "v0.7.1",
         "commit": "57bbeb3e21c31b64641f9885bb2f390b84f8b925"
+      },
+      "jquery-ui-sortable": {
+        "git": "https://github.com/rgm/meteor-jquery-ui-sortable.git",
+        "tag": "v1.10.3",
+        "commit": "4423bd4b28cd81df91400a6bcb2a3d82e72894dc"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
