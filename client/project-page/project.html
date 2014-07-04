@@ -1,11 +1,12 @@
 <template name="projectPage">
-<div class="project-nav">
-	<a href="#">{{name}}</a>
-</div>
-{{> projectLists}}
+	<div class="project-nav">
+		<a href="#">{{name}}</a>
+	</div>
+
+	{{> lists}}
 </template>
 
-<template name="projectLists">
+<template name="lists">
 	<ul class="lists list-inline">
 		{{#each lists}}
 			{{> list}}
@@ -28,12 +29,13 @@
 		<li data-id="{{_id}}" class="list">
 			<div class="panel panel-primary">
 				<div class="panel-heading" >
-					<span class="panel-title">{{name}}</span>
+					<span class="panel-title display">{{name}}</span>
+					<input class="form-control editor" value="{{name}}">
 				</div>
 				<div class="cards panel-body">
 					<ul data-list-id="{{_id}}" class="cards list-unstyled {{#unless cards.length}}empty{{/unless}}">
 						{{#each cards}}
-							{{> listCard}}
+							{{> card}}
 						{{/each}}
 					</ul>
 					<div rel="new" class="new-card panel-footer">
@@ -45,8 +47,7 @@
 		</li>
 </template>
 
-
-<template name="listCard">
+<template name="card">
 	<li data-card-id="{{_id}}" data-list-id="{{listId}}" class="card panel panel-default">
 		<div class="panel-body">
 			<span>{{label}}</span>

@@ -8,7 +8,7 @@ reindexCards = (ul) ->
                 listId: listId
                 sortIndex: index
 
-createCard = (listId, label) ->
+insertCard = (listId, label) ->
     index = Cards.find(listId: listId).count()
     Cards.insert
         listId: listId
@@ -47,12 +47,12 @@ Template.list.events
     "blur textarea": (e) ->
         data = $(e.target).val().trim()
         $(e.target).closest("[rel=new]").removeClass "active"
-        addCard @_id, data  if data
+        insertCard @_id, data  if data
         $(e.target).val ""
     "keyup textarea": (e) ->
         if e.keyCode is 13 and not e.shiftKey
             data = $(e.target).val().trim()
-            addCard @_id, data  if data
+            insertCard @_id, data  if data
             $(e.target).val ""
         else if e.keyCode is 27
             $(e.target).val ""

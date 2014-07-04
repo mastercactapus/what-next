@@ -1,5 +1,48 @@
 @listwidth: 18em;
 
+.list {
+	vertical-align: top;
+	display: inline-block;
+	width: @listwidth;
+	min-height: 6em;
+	margin-left: 4px;
+	margin-right: 4px;
+
+
+	.panel-heading {
+		cursor: -moz-grab;
+		cursor: -webkit-grab;
+		cursor: grab;
+
+
+		&:not(.editing) .editor {
+			display: none;
+		}
+		&.editing .display {
+			display: none;
+		}
+
+	}
+	.panel-title {
+		cursor: pointer;
+
+		&[contenteditable] {
+			color: black;
+			cursor: text;
+		}
+	}
+
+	.panel-footer {
+		cursor: pointer;
+	}
+
+	.panel-footer:hover {
+		background: lightgrey;
+	}
+
+
+}
+
 .lists {
 	display:inline-block;
 	position:absolute;
@@ -83,40 +126,6 @@ body.sort-cards {
 		width: 100%;
 		padding:0;
 		margin:0;
-	}
-
-}
-
-
-.list {
-	vertical-align: top;
-	display: inline-block;
-	width: @listwidth;
-	min-height: 6em;
-	margin-left: 4px;
-	margin-right: 4px;
-
-
-	.panel-heading {
-		cursor: -moz-grab;
-		cursor: -webkit-grab;
-		cursor: grab;
-	}
-	.panel-title {
-		cursor: pointer;
-
-		&[contenteditable] {
-			color: black;
-			cursor: text;
-		}
-	}
-
-	.panel-footer {
-		cursor: pointer;
-	}
-
-	.panel-footer:hover {
-		background: lightgrey;
 	}
 
 }

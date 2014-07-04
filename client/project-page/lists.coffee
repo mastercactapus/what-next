@@ -10,10 +10,22 @@ selectText = (el) ->
         selection.removeAllRanges()
         selection.addRange range
 
-Template.projectLists.lists = ->
+startEdit = (el) ->
+    $("ul.lists").enableSelection()
+    $el = $(el)
+    $el.addClass("editing")
+    $el.find(".editor").focus()
+    $el.find(".editor").select()
+
+stopEdit = (el) ->
+    $("ul.lists").disableSelection()
+    $el = $(el)
+    $el.removeClass("editing")
+
+Template.lists.lists = ->
     Lists.find {projectKey: @key}, {sort: {sortIndex: 1}}
 
-Template.projectLists.rendered = ->
+Template.lists.rendered = ->
     $("ul.lists").sortable
         handle: ".panel-heading"
         placeholder: "list-shadow"
@@ -22,7 +34,7 @@ Template.projectLists.rendered = ->
         tolerance: "pointer"
         cancel: "[contenteditable]"
 
-Template.projectLists.events
+Template.lists.events
     "sortstart ul.lists": (e)->
         $("li.new-list").addClass "hide"
     "sortstop ul.lists": (e) ->
@@ -32,28 +44,26 @@ Template.projectLists.events
             Lists.update {_id: id},
                 $set: {sortIndex: index}
     "click .list .panel-title": (e) ->
+        startEdit $(e.target).closest(".panel-heading")
+    "blur .panel-heading .editor": (e)->
         $t = $(e.target)
-        $t.addClass "form-control form-control-sm"
-        $t.attr "contenteditable", true
-        $("ul.lists").enableSelection()
-        $t.focus()
-        selectText e.target
-    "blur .panel-title[contenteditable]": (e)->
+        val = $t.val().trim()
+        if val then Lists.update {_id: @_id},
+            $set: {name: val}
+        $t.val(@name)
+        stopEdit $t.closest ".panel-heading"
+
+    "keyup .panel-heading .editor": (e)->
         $t = $(e.target)
-        $t.removeClass "form-control form-control-sm"
-        $t.removeAttr("contenteditable")
-        $("ul.lists").disableSelection()
-        Lists.update {_id: @_id},
-            $set: {name: $t.text().trim()}
-    "keyup .panel-title[contenteditable]": (e)->
         if e.keyCode is 13 and not e.shiftKey
-            $t = $(e.target)
-            $t.removeClass "form-control form-control-sm"
-            $("ul.lists").disableSelection()
-            val = $t.text().trim()
-            Lists.update {_id: @_id},
+            val = $t.val().trim()
+            if val then Lists.update {_id: @_id},
                 $set: {name: val}
-            $t.text val
+            $t.val(@name)
+            stopEdit $t.closest ".panel-heading"
+        else if e.keyCode is 27
+            $t.val(@name)
+            stopEdit $t.closest ".panel-heading"
     "click .new-list": (e)->
         $(".new-list .frm").removeClass "hide"
         $(".new-list .stub").addClass "hide"
@@ -69,7 +79,3 @@ Template.projectLists.events
         $(".new-list .frm").removeClass "hide"
         $(".new-list .stub").addClass "hide"
         false
-    "mouseenter .list-creator": (e) ->
-        $t = $(e.target);
-        $t.find(".list").removeClass("hide");
-        $t.find(".stub").addClass("hide");
