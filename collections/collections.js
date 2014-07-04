@@ -27,7 +27,7 @@ Groups = new Meteor.Collection("groups");
 
 */
 
-Tasks = new Meteor.Collection("tasks");
+Cards = new Meteor.Collection("cards");
 /*
 
 	label
@@ -38,4 +38,3 @@ Tasks = new Meteor.Collection("tasks");
 	project
 
 */
-

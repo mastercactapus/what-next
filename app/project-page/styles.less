@@ -8,6 +8,7 @@
 	top:2em;
 	bottom:0;
 	width: 100%;
+
 }
 
 .list-shadow {
@@ -21,16 +22,83 @@
 	cursor: pointer;
 }
 
+.cards {
+	min-height:2em;
+	&.panel-body {
+		padding: 4px;
+	}
+	.panel-body {
+		padding: 8px;
+	}
+	.panel {
+		margin-bottom: 4px;
+	}
+}
+
+.card {
+	cursor: pointer;
+}
+
+.card-shadow {
+	min-height: 2em;
+	padding: 8px;
+	background: black;
+	opacity: 0.3;
+	border-radius: 4px;
+	border: 1px solid transparent;
+	margin-bottom: 4px;
+}
+
+body.sort-cards {
+	.new-card {
+		display: none;
+	}
+}
+
+.new-card {
+
+	&:not(.active) {
+		textarea {
+			display:none;
+		}
+	}
+	&.active {
+		span {
+			display: none;
+		}
+	}
+
+	textarea {
+		height: 100%;
+		width: 100%;
+		padding:0;
+		margin:0;
+	}
+
+}
+
+
 .list {
+	vertical-align: top;
 	display: inline-block;
 	width: @listwidth;
 	min-height: 6em;
-	margin-left: 6px;
-	margin-right: 6px;
+	margin-left: 4px;
+	margin-right: 4px;
 
 
 	.panel-heading {
+		cursor: -moz-grab;
+		cursor: -webkit-grab;
+		cursor: grab;
+	}
+	.panel-title {
 		cursor: pointer;
+
+		&[contenteditable] {
+			color: black;
+			cursor: text;
+		}
 	}
 
 	.panel-footer {

@@ -1,24 +1,41 @@
 if (Meteor.isClient) {
-
+function selectText(element) {
+    var doc = document
+        , range, selection
+    ;
+    if (doc.body.createTextRange) { //ms
+        range = doc.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) { //all others
+        selection = window.getSelection();
+        range = doc.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
     Template.projectLists.lists = function() {
         return Lists.find({projectKey: this.key}, {sort: {sortIndex: 1}});
     };
     Template.projectLists.rendered = function() {
         $("ul.lists").sortable({
-            handle: ".panel-title",
+            handle: ".panel-heading",
             placeholder: "list-shadow",
             axis: "x",
             delay: 200,
-            tolerance: "pointer"
+            tolerance: "pointer",
+            cancel: "[contenteditable]"
         });
         $("ul.lists").disableSelection();
+
     }
 
     Template.projectLists.events({
-        "sortstart ul": function(e) {
+        "sortstart ul.lists": function(e) {
             $("li.new-list").addClass("hide");
         },
-        "sortstop ul": function(e) {
+        "sortstop ul.lists": function(e) {
             $("li.new-list").removeClass("hide");
 
             $("li.list").each(function(index, li){
@@ -30,7 +47,20 @@ if (Meteor.isClient) {
 
         },
         "click .list .panel-title": function(e) {
-            console.log("edit")
+            $(e.target).addClass("form-control form-control-sm");
+            $(e.target).attr("contenteditable", true);
+            $("ul.lists").enableSelection();
+            $(e.target).focus();
+            selectText(e.target);
+        },
+        "blur [contenteditable]": function(e) {
+            $(e.target).removeClass("form-control form-control-sm");
+            $(e.target).removeAttr("contenteditable");
+            $("ul.lists").disableSelection();
+
+            Lists.update({_id: this._id}, {
+                $set: {name: $(e.target).text()}
+            });
         },
 
         "click .new-list": function(e) {

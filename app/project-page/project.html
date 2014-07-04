@@ -25,24 +25,31 @@
 </template>
 
 <template name="list">
-
-		<li data-id="{{_id}}" class="list panel panel-primary">
-			<div class="panel-heading" >
-				<h3 class="panel-title" draggable="true">{{name}}</h3>
-			</div>
-			<div class="cards panel-body">
-				{{> listCards}}
-			</div>
-			<div class="new-task panel-footer">
-				New Card...
+		<li data-id="{{_id}}" class="list">
+			<div class="panel panel-primary">
+				<div class="panel-heading" >
+					<span class="panel-title">{{name}}</span>
+				</div>
+				<div class="cards panel-body">
+					<ul data-list-id="{{_id}}" class="cards list-unstyled {{#unless cards.length}}empty{{/unless}}">
+						{{#each cards}}
+							{{> listCard}}
+						{{/each}}
+					</ul>
+					<div rel="new" class="new-card panel-footer">
+						<span>New Card...</span>
+						<textarea class="form-control"></textarea>
+					</div>
+				</div>
 			</div>
 		</li>
 </template>
 
-<template name="newList">
 
-</template>
-
-<template name="listCards">
-
+<template name="listCard">
+	<li data-card-id="{{_id}}" data-list-id="{{listId}}" class="card panel panel-default">
+		<div class="panel-body">
+			<span>{{label}}</span>
+		</div>
+	</li>
 </template>
