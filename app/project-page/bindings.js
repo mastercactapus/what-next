@@ -1,20 +1,22 @@
 if (Meteor.isClient) {
-function selectText(element) {
-    var doc = document
-        , range, selection
-    ;
-    if (doc.body.createTextRange) { //ms
-        range = doc.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-    } else if (window.getSelection) { //all others
-        selection = window.getSelection();
-        range = doc.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
+    function selectText(element) {
+        var doc = document
+            , range, selection
+        ;
+        if (doc.body.createTextRange) { //ms
+            range = doc.body.createTextRange();
+            range.moveToElementText(element);
+            range.select();
+        } else if (window.getSelection) { //all others
+            selection = window.getSelection();
+            range = doc.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
     }
-}
+
+
     Template.projectLists.lists = function() {
         return Lists.find({projectKey: this.key}, {sort: {sortIndex: 1}});
     };
@@ -53,14 +55,28 @@ function selectText(element) {
             $(e.target).focus();
             selectText(e.target);
         },
-        "blur [contenteditable]": function(e) {
+        "blur .panel-title[contenteditable]": function(e) {
             $(e.target).removeClass("form-control form-control-sm");
             $(e.target).removeAttr("contenteditable");
             $("ul.lists").disableSelection();
 
             Lists.update({_id: this._id}, {
-                $set: {name: $(e.target).text()}
+                $set: {name: $(e.target).text().trim()}
             });
+        },
+        "keyup .panel-title[contenteditable]": function(e) {
+            if (e.keyCode === 13 && !e.shiftKey) {
+                $(e.target).removeClass("form-control form-control-sm");
+                $(e.target).removeAttr("contenteditable");
+                $("ul.lists").disableSelection();
+                var val = $(e.target).text().trim();
+
+                Lists.update({_id: this._id}, {
+                    $set: {name: val}
+                });
+
+                $(e.target).text(val);
+            }
         },
 
         "click .new-list": function(e) {

@@ -1,5 +1,30 @@
 if (Meteor.isClient) {
 
+    function reindexCards(ul) {
+        var $ul = $(ul);
+        var listId = $ul.data("listId");
+
+        $ul.find("li.card").each(function(index, li){
+            var cardId = $(li).data("cardId");
+
+            Cards.update({_id: cardId},{
+                $set: {
+                    listId: listId,
+                    sortIndex: index
+                }
+            });
+        });
+    }
+
+    function addCard(listId, label) {
+        var index = Cards.find({listId: listId}).count();
+        Cards.insert({
+            listId: listId,
+            label: label,
+            sortIndex: index
+        });
+    }
+
     Template.list.cards = function() {
         return Cards.find({listId: this._id}, {sort: {sortIndex: 1}});
     }
@@ -23,73 +48,32 @@ if (Meteor.isClient) {
             $("body").removeClass("sort-cards");
         },
         "sortreceive ul.cards": function(e) {
-            var listId = $(e.target).data("listId");
-
             var mrElement = $(e.originalEvent.target).closest("li");
 
-            $(e.target).find("li.card").each(function(index, el){
-                var id = $(el).data("cardId");
-
-                Cards.update({_id: id}, {
-                    $set: {
-                        listId: listId,
-                        sortIndex: index
-                    }
-                });
-
-                //duplication fix
-                mrElement.remove();
-            });
+            reindexCards(e.target);
+            mrElement.remove();
         },
         "sortremove ul.cards": function(e) {
-            var listId = $(e.target).data("listId");
-            $(e.target).find("li.card").each(function(index, el){
-                var id = $(el).data("cardId");
-
-                Cards.update({_id: id}, {
-                    $set: {
-                        listId: listId,
-                        sortIndex: index
-                    }
-                });
-            })
+            reindexCards(e.target);
         },
-
-
         "click .new-card": function(e) {
             $(e.target).closest("[rel=new]").addClass("active");
             $(e.target).find("textarea").focus();
         },
         "blur textarea": function(e) {
             var data = $(e.target).val().trim();
-
             $(e.target).closest("[rel=new]").removeClass("active");
-
             if (data) {
-                var index = Cards.find({listId: this._id}).count();
-                Cards.insert({
-                    label: data,
-                    listId: this._id,
-                    projectKey: this.projectKey,
-                    index: index
-                });
+                addCard(this._id, data);
             }
-
             $(e.target).val("");
         },
         "keyup textarea": function(e) {
             if (e.keyCode === 13 && !e.shiftKey) {
                 var data = $(e.target).val().trim();
                 if (data) {
-                    var index = Cards.find({listId: this._id}).count();
-                    Cards.insert({
-                        label: data,
-                        listId: this._id,
-                        projectKey: this.projectKey,
-                        index: index
-                    });
+                    addCard(this._id, data);
                 }
-
                 $(e.target).val("");
             } else if (e.keyCode === 27) {
                 $(e.target).val("");
